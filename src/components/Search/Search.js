@@ -31,7 +31,6 @@ const Search = () => {
                 setSearchResult(SearchData.data.items);
                 setLoading(false);
             }
-            console.log(SearchData.data);
         }
         fetchSearchData();
     }, [searchQuery]);
@@ -41,7 +40,8 @@ const Search = () => {
         <div className='dashboard-main'>
             <h1>Results for "{searchQuery}"</h1>
             <div className="dashboard-container">
-                {!loading ? searchResult.map((item) => {
+                {!loading ? searchResult.map((item, index) => {
+                    const videoId = item.id?.videoId || item.id || `search-${index}`;
                     return (
                         <Suspense 
                             fallback={
@@ -56,7 +56,7 @@ const Search = () => {
                                     </div>
                                 </div>
                             } 
-                            key={item.id.videoId + Math.random()} 
+                            key={`${videoId}-${index}`} 
                         >
                             <SearchCard video={item} />
                         </Suspense>

@@ -35,7 +35,6 @@ const Player = () => {
     const location = useLocation();
     const { videoId } = useParams();
     const { Title, channelData, video } = location.state;
-    console.log(location.state);
 
     const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
     const subscribers = Intl.NumberFormat('en', { notation: "compact" }).format(channelData?.statistics?.subscriberCount);

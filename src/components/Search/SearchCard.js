@@ -7,36 +7,42 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const SearchCard = ({ video }) => {
     const [videoData, setVideoData] = useState([]);
-    console.log(video);
     var { title, thumbnails, channelId, channelTitle, publishedAt } = video?.snippet;
 
     useEffect(() => {
         const GetVideoData = async () => {
-            const { data } = await axios.get(`/videos`, {
-                params: {
-                    part: 'contentDetails,statistics',
-                    id: video.id.videoId,
-                    key: process.env.REACT_APP_YT_API
-                }
-            });
+            if (!video?.id?.videoId || !channelId) return;
+            
+            try {
+                const { data } = await axios.get(`/videos`, {
+                    params: {
+                        part: 'contentDetails,statistics',
+                        id: video.id.videoId,
+                        key: process.env.REACT_APP_YT_API
+                    }
+                });
 
-            const ChannelData = await axios.get(`/channels`, {
-                params: {
-                    part: 'snippet,statistics',
-                    id: channelId,
-                    key: process.env.REACT_APP_YT_API
-                }
-            });
-            console.log(ChannelData);
+                const ChannelData = await axios.get(`/channels`, {
+                    params: {
+                        part: 'snippet,statistics',
+                        id: channelId,
+                        key: process.env.REACT_APP_YT_API
+                    }
+                });
 
-            setVideoData({
-                contentDetails: data.items[0].contentDetails,
-                statistics: data.items[0].statistics,
-                channelData: ChannelData.data.items[0]
-            });
+                if (data?.items?.[0] && ChannelData?.data?.items?.[0]) {
+                    setVideoData({
+                        contentDetails: data.items[0].contentDetails,
+                        statistics: data.items[0].statistics,
+                        channelData: ChannelData.data.items[0]
+                    });
+                }
+            } catch (error) {
+                console.error('Erro ao buscar dados do vídeo:', error);
+            }
         }
         GetVideoData();
-    }, [video.id.videoId, channelId]);
+    }, [video?.id?.videoId, channelId]);
     // console.log(videoData);
 
     //Dotter overflowing Title
@@ -91,6 +97,8 @@ const SearchCard = ({ video }) => {
         uploadDate,
         views
     }
+
+    if (!video?.id?.videoId) return null;
 
     return (
         <div className='videocard-main'>

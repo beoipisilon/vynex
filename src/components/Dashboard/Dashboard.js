@@ -13,41 +13,30 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchTrendingVideos = async () => {
-      const TrendData = await axios.get('/videos', {
-        params: {
-          part: 'snippet,contentDetails,statistics,player',
-          chart: 'mostPopular',
-          maxResults: 20,
-          key: process.env.REACT_APP_YT_API
-        },
-        headers: {
-          'Cache-Control': 'max-age=2592000'
-        }
-      });
+      try {
+        const TrendData = await axios.get('/videos', {
+          params: {
+            part: 'snippet,contentDetails,statistics,player',
+            chart: 'mostPopular',
+            maxResults: 20,
+            key: process.env.REACT_APP_YT_API
+          },
+          headers: {
+            'Cache-Control': 'max-age=2592000'
+          }
+        });
 
-      if (TrendData) {
-        setTrendingVideos(TrendData.data.items);
+        if (TrendData && TrendData.data && TrendData.data.items) {
+          setTrendingVideos(TrendData.data.items);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar vídeos trending:', error);
+      } finally {
         setLoading(false);
       }
-      // console.log(TrendData.data);
     }
     fetchTrendingVideos();
   }, []);
-
-  const lazyFallback = () => {
-    return (
-      <div className='skeleton-main'>
-        <Skeleton className="skeleton-thumb" variant="rectangular" sx={{ bgcolor: 'var(--secondary-alt)' }} />
-        <div className="skeleton-info">
-          <Skeleton className="skeleton-avatar" variant="circular" width={36} height={36} sx={{ bgcolor: 'var(--secondary-alt)' }} />
-          <div className="skeleton-text">
-            <Skeleton variant="text" width="90%" height={20} sx={{ bgcolor: 'var(--secondary-alt)' }} />
-            <Skeleton variant="text" width="60%" height={20} sx={{ bgcolor: 'var(--secondary-alt)' }} />
-          </div>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className='dashboard-main'>
@@ -55,7 +44,21 @@ const Dashboard = () => {
       <div className="dashboard-container">
         {!loading ? trendingVideos.map((video) => {
           return (
-            <Suspense fallback={lazyFallback} key={video.id + Math.random()} >
+            <Suspense 
+              fallback={
+                <div className='skeleton-main'>
+                  <Skeleton className="skeleton-thumb" variant="rectangular" sx={{ bgcolor: 'var(--secondary-alt)' }} />
+                  <div className="skeleton-info">
+                    <Skeleton className="skeleton-avatar" variant="circular" width={36} height={36} sx={{ bgcolor: 'var(--secondary-alt)' }} />
+                    <div className="skeleton-text">
+                      <Skeleton variant="text" width="90%" height={20} sx={{ bgcolor: 'var(--secondary-alt)' }} />
+                      <Skeleton variant="text" width="60%" height={20} sx={{ bgcolor: 'var(--secondary-alt)' }} />
+                    </div>
+                  </div>
+                </div>
+              } 
+              key={video.id + Math.random()} 
+            >
               <Videocard video={video} />
             </Suspense>
           )
