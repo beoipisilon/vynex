@@ -60,7 +60,7 @@ const Videocard = ({ video }) => {
     useEffect(() => {
         const GetChannelData = async () => {
             try {
-                const ChannelData = await axios.get('', {
+                const ChannelData = await axios.get('/', {
                     params: {
                         endpoint: 'channels',
                         part: 'snippet,statistics',

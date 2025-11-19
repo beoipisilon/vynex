@@ -123,7 +123,7 @@ const Player = () => {
                 const channelId = video?.snippet?.channelId;
                 const searchQuery = Title?.split(' ').slice(0, 3).join(' ') || 'music';
                 
-                const RelatedData = await axios.get('', {
+                const RelatedData = await axios.get('/', {
                     params: {
                         endpoint: 'search',
                         part: 'snippet',
@@ -144,7 +144,7 @@ const Player = () => {
                         .join(',');
                     
                     if (videoIds) {
-                        const VideoDetails = await axios.get('', {
+                        const VideoDetails = await axios.get('/', {
                             params: {
                                 endpoint: 'videos',
                                 part: 'snippet,contentDetails,statistics,player',

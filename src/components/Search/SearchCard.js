@@ -15,7 +15,7 @@ const SearchCard = ({ video }) => {
             if (!video?.id?.videoId || !channelId) return;
             
             try {
-                const { data } = await axios.get('', {
+                const { data } = await axios.get('/', {
                     params: {
                         endpoint: 'videos',
                         part: 'contentDetails,statistics',
@@ -23,7 +23,7 @@ const SearchCard = ({ video }) => {
                     }
                 });
 
-                const ChannelData = await axios.get('', {
+                const ChannelData = await axios.get('/', {
                     params: {
                         endpoint: 'channels',
                         part: 'snippet,statistics',

@@ -5,7 +5,8 @@ import axios from 'axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-axios.defaults.baseURL = process.env.REACT_APP_YT_URL || '/api/youtube';
+const baseURL = process.env.REACT_APP_YT_URL || '/api/youtube';
+axios.defaults.baseURL = baseURL;
 
 root.render(
   <React.StrictMode>
