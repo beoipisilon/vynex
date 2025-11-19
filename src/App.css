@@ -1,0 +1,103 @@
+:root{
+  --primary: #fff;
+  --secondary: #f2f2f2;
+  --secondary-alt: #dadada;
+  --text: #0f0f0f;
+  --text-light: rgba(15, 15, 15, 0.5);
+  --logo: #ff0000;
+}
+
+[data-theme="dark"]{
+  --primary: #0f0f0f;
+  --secondary: #212121;
+  --secondary-alt: #282828;
+  --text: #f1f1f1;
+  --text-light: rgba(241, 241, 241, 0.5);
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins";
+}
+
+.flex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.col{
+  flex-direction: column;
+}
+
+.gap-05{
+  gap: 0.5em;
+}
+
+.gap-1{
+  gap: 1em;
+}
+
+.gap-2{
+  gap: 2em;
+}
+
+.w-100{
+  width: 100%;
+}
+
+.start{
+  justify-content: flex-start;
+}
+
+.astart{
+  align-items: flex-start;
+}
+
+body{
+  background-color: var(--primary);
+  color: var(--text);
+  height: 100%;
+  width: 100vw;
+  overflow-x: hidden !important;
+}
+
+@media (min-width: 601px){
+.Outlet{
+  /* background-color: #fff; */
+  margin: 1em;
+  margin-left: 14em;
+  margin-right: 2em;
+}
+}
+
+@media (max-width: 600px){
+.Outlet{
+  /* background-color: #fff; */
+  margin: 1em;
+}
+}
+
+
+/* Custom ScrollBar */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+/* Disable blue button click highlight */
+input, button, a, div {
+  -webkit-tap-highlight-color: transparent;
+}
