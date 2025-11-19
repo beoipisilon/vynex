@@ -58,7 +58,7 @@ const Header = () => {
                     </div>
 
                     <div className="profile-links flex col">
-                        <a href="https://vynex.vercel.app/">
+                        <a href="https://vynex-phi.vercel.app">
                             <Devbase fill="var(--text)" size={30} />
                             <span>Vercel</span>
                         </a>
