@@ -1,23 +1,34 @@
 import "./Header.css"
 import "./HeaderM.css"
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { HiSearch } from "react-icons/hi"
 import { BsYoutube } from "react-icons/bs"
 import { AiOutlineUser } from "react-icons/ai"
-import { FaTimes, FaGithub } from "react-icons/fa"
+import { FaGithub } from "react-icons/fa"
 import { Devbase } from "../../assets";
 
 const Header = () => {
     const [showProfile, setShowProfile] = useState(false);
     const SearchRef = useRef(null);
+    const profileRef = useRef(null);
     const navigate = useNavigate();
 
-    if (showProfile) {
-        document.body.style.overflow = "hidden";
-    } else {
-        document.body.style.overflow = "unset";
-    }
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (profileRef.current && !profileRef.current.contains(event.target)) {
+                setShowProfile(false);
+            }
+        };
+
+        if (showProfile) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showProfile]);
 
     const SearchQuery = (e) => {
         e.preventDefault();
@@ -43,35 +54,43 @@ const Header = () => {
                 </button>
             </form>
 
-            <div className="header-profile flex" data-profile={showProfile}>
-                <div className="profile-icon" onClick={() => setShowProfile(true)}>
+            <div className="header-profile" ref={profileRef}>
+                <div className="profile-icon" onClick={() => setShowProfile(!showProfile)}>
                     <AiOutlineUser color="var(--text)" size={25} />
                 </div>
 
-                <div className="profile-expand" style={{ display: "none" }}>
-                    <div className="profile-name flex col gap-05">
-                        <FaTimes className="profile-close" onClick={() => setShowProfile(false)} color="var(--text)" size={20} />
-                        <div className="profile-icon">
-                            <AiOutlineUser color="var(--text)" size={50} />
+                {showProfile && (
+                    <div className="profile-dropdown">
+                        <div className="profile-header">
+                            <div className="profile-avatar">
+                                <AiOutlineUser color="var(--text)" size={40} />
+                            </div>
+                            <div className="profile-info">
+                                <div className="profile-name">beoipisilon</div>
+                                <div className="profile-handle">@beoipisilon</div>
+                            </div>
                         </div>
-                        <h3>beoipisilon</h3>
-                    </div>
 
-                    <div className="profile-links flex col">
-                        <a href="https://vynex-phi.vercel.app">
-                            <Devbase fill="var(--text)" size={30} />
-                            <span>Vercel</span>
-                        </a>
-                        <a href="https://github.com/beoipisilon">
-                            <FaGithub color="var(--text)" size={30} />
-                            <span>GitHub</span>
-                        </a>
-                    </div>
+                        <div className="profile-divider"></div>
 
-                    <div className="profile-footer">
-                        <p>© Copyright 2025 beoipisilon</p>
+                        <div className="profile-menu">
+                            <a href="https://vynex-phi.vercel.app" className="profile-menu-item" target="_blank" rel="noopener noreferrer">
+                                <Devbase fill="var(--text)" size={20} />
+                                <span>Vercel</span>
+                            </a>
+                            <a href="https://github.com/beoipisilon" className="profile-menu-item" target="_blank" rel="noopener noreferrer">
+                                <FaGithub color="var(--text)" size={20} />
+                                <span>GitHub</span>
+                            </a>
+                        </div>
+
+                        <div className="profile-divider"></div>
+
+                        <div className="profile-footer">
+                            <p>© Copyright 2025 beoipisilon</p>
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </div>
     )

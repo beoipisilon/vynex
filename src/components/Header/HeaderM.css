@@ -41,83 +41,133 @@
         width: 100%;
     }
     
+    .header-profile {
+        position: relative;
+    }
+
     .header-profile .profile-icon{
         background-color: var(--secondary-alt);
         padding: 0.5em;
         border-radius: 100%;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header-profile .profile-icon:hover {
+        background-color: var(--secondary);
     }
     
     .header-profile .profile-icon svg{
         display: block;
     }
 
-    [data-profile="true"]{
-        position: relative;
-        /* transition: 0.3s ease-in-out; */
+    .profile-dropdown {
+        position: absolute;
+        top: calc(100% + 0.5em);
+        right: 0;
+        width: 280px;
+        max-width: calc(100vw - 2em);
+        background-color: var(--primary);
+        border: 1px solid var(--secondary-alt);
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        overflow: hidden;
+        animation: dropdownFadeIn 0.2s ease;
     }
 
-    [data-profile="true"]>.profile-icon{
-        visibility: hidden;
+    @keyframes dropdownFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
-    
-    [data-profile="true"] .profile-expand{
-        display: block !important;
-        width: 15em;
-        height: 30em;
-        background-color: var(--secondary);
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        padding: 1em 1.25em;
+    }
+
+    .profile-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background-color: var(--secondary-alt);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .profile-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .profile-name {
+        font-size: 1em;
+        font-weight: 600;
         color: var(--text);
-        position: absolute;
-        top: 2em;
-        right: 0.1em;
-        margin: 1em;
-        border: 1em solid var(--secondary);
-        border-radius: 0.5em;
-        z-index: 3;
+        margin-bottom: 0.25em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    .profile-expand .profile-name{
-        justify-content: space-evenly;
-        font-size: 1.1em;
-        position: relative;
-        padding-top: 0.5em;
+    .profile-handle {
+        font-size: 0.875em;
+        color: var(--text-light);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    .profile-expand .profile-close{
-        position: absolute;
-        top: 0em;
-        right: 0em;
+    .profile-divider {
+        height: 1px;
+        background-color: var(--secondary-alt);
+        margin: 0.5em 0;
+    }
+
+    .profile-menu {
+        padding: 0.5em 0;
+    }
+
+    .profile-menu-item {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        padding: 0.75em 1.25em;
+        text-decoration: none;
+        color: var(--text);
+        transition: background-color 0.2s ease;
         cursor: pointer;
     }
 
-    .profile-expand .profile-links{
-        margin-top: 2em;
-        gap: 1em;
-    }
-    
-    .profile-expand .profile-links a{
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 1em;
-        width: 100%;
-        padding: 0.4em 1.5em;
-        border-radius: 0.5em;
-        transition: 0.2s ease-in-out;
-        text-decoration: none;
-        color: var(--text);
+    .profile-menu-item:hover {
+        background-color: var(--secondary);
     }
 
-    .profile-expand .profile-links a:hover{
-        background-color: var(--secondary-alt);
+    .profile-menu-item svg {
+        flex-shrink: 0;
     }
 
-    .profile-expand .profile-footer{
-        position: absolute;
-        bottom: 0em;
-        /* padding: 1em; */
-        width: 100%;
-        font-size: 0.8em;
+    .profile-menu-item span {
+        font-size: 0.9375em;
+    }
+
+    .profile-footer {
+        padding: 0.75em 1.25em;
+        font-size: 0.75em;
+        color: var(--text-light);
         text-align: center;
-        /* border-top: 1px solid var(--text-light); */
     }
 }

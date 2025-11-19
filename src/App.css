@@ -66,9 +66,8 @@ body{
 
 @media (min-width: 601px){
 .Outlet{
-  /* background-color: #fff; */
   margin: 1em;
-  margin-left: 14em;
+  margin-left: 256px;
   margin-right: 2em;
 }
 }

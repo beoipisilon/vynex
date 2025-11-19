@@ -23,14 +23,7 @@ const Sidebar = () => {
                 </div>
                 <span>Music</span>
             </Link>
-
-            <div className="sidebar-nav flex gap-1">
-                <div className="nav-icon">
-                    <Subscription fill="var(--text)" size={30} />
-                </div>
-                <span>Subscription</span>
-            </div>
-
+            
             <Link to={"/library"} className={`sidebar-nav flex gap-1 ${location.pathname === "/library" ? "active" : ""}`} title="Library">
                 <div className="nav-icon">
                     <Library fill="var(--text)" size={30} />

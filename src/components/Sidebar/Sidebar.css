@@ -1,47 +1,92 @@
-@media (min-width: 601px){
-    .sidebar-main{
+@media (min-width: 601px) {
+    .sidebar-main {
         position: fixed;
         left: 0;
-        height: 100%;
-        width: 14em;
-        padding: 1em 1.5em;
-        justify-content: start;
+        top: 0;
+        height: 100vh;
+        width: 240px;
         background-color: var(--primary);
-        transition: 0.3s ease-in-out;
+        z-index: 10;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 4.5em 0 0 0;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
     }
-    
-    [data-expand="false"]{
-        width: 6.3em;
+
+    .sidebar-main::-webkit-scrollbar {
+        width: 6px;
     }
-    
-    [data-expand="false"] .sidebar-nav span{
-        width: 0;
-        opacity: 0;
-        visibility: hidden;
-        transition: 0.2s ease-in-out;
+
+    .sidebar-main::-webkit-scrollbar-track {
+        background: transparent;
     }
-    
-    .sidebar-nav{
-        cursor: pointer;
-        width: 100%;
-        justify-content: start;
-        padding: 0.5em 0.7em;
-        border-radius: 0.5em;
+
+    .sidebar-main::-webkit-scrollbar-thumb {
+        background: var(--secondary-alt);
+        border-radius: 3px;
+    }
+
+    .sidebar-main::-webkit-scrollbar-thumb:hover {
+        background: var(--text-light);
+    }
+
+    .sidebar-nav {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 1.25em;
+        padding: 0.75em 1.5em;
+        border-radius: 0;
         text-decoration: none;
         color: var(--text);
-        transition: 0.2s ease-in-out;
+        transition: all 0.2s ease;
+        position: relative;
+        font-size: 0.95em;
+        font-weight: 500;
+        width: 100%;
+        margin: 0;
+        box-sizing: border-box;
     }
-    
-    .sidebar-nav .nav-icon svg{
+
+    .sidebar-nav:hover {
+        background-color: var(--secondary-alt);
+    }
+
+    .sidebar-nav.active {
+        background-color: var(--secondary-alt);
+        color: var(--logo);
+        font-weight: 600;
+    }
+
+    .sidebar-nav.active .nav-icon svg {
+        color: var(--logo);
+    }
+
+    .sidebar-nav.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 60%;
+        background-color: var(--logo);
+        border-radius: 0 3px 3px 0;
+    }
+
+    .nav-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+    }
+
+    .nav-icon svg {
         display: block;
     }
-    
-    .sidebar-nav.active{
-        background-color: var(--secondary-alt);
-    }
-    
-    .sidebar-nav:hover{
-        background-color: var(--secondary-alt);
-    }
-    
 }
