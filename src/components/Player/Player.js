@@ -3,7 +3,7 @@ import { useState, useEffect, Suspense, lazy, useRef } from 'react'
 import axios from 'axios'
 import { useLocation, useParams } from 'react-router-dom'
 import ReactPlayer from 'react-player/youtube'
-import { FaBell, FaRegBell, FaThumbsUp, FaThumbsDown, FaRegThumbsUp, FaRegThumbsDown } from 'react-icons/fa'
+import { FaBell, FaRegBell, FaThumbsUp, FaThumbsDown, FaRegThumbsUp, FaRegThumbsDown, FaBookmark, FaRegBookmark } from 'react-icons/fa'
 import { AiOutlineUser } from 'react-icons/ai'
 const Videocard = lazy(() => import('../VideoCard/Videocard'));
 
@@ -11,6 +11,7 @@ const Player = () => {
     const [like, setLike] = useState(null);
     const [subbed, setSubbed] = useState(false);
     const [notify, setNotify] = useState(false);
+    const [saved, setSaved] = useState(false);
     const [relatedVideos, setRelatedVideos] = useState([]);
     const [loadingRelated, setLoadingRelated] = useState(true);
     const [comments, setComments] = useState([]);
@@ -49,6 +50,13 @@ const Player = () => {
         const savedUserName = localStorage.getItem('userName');
         if (savedUserName) {
             setUserName(savedUserName);
+        }
+
+        const libraryVideos = localStorage.getItem('library_videos');
+        if (libraryVideos) {
+            const videos = JSON.parse(libraryVideos);
+            const isSaved = videos.some(v => v.id === videoId);
+            setSaved(isSaved);
         }
     }, [videoId]);
 
@@ -93,6 +101,20 @@ const Player = () => {
         if (hours < 24) return `${hours} hours ago`;
         if (days < 30) return `${days} days ago`;
         return date.toLocaleDateString();
+    };
+
+    const handleSaveToLibrary = () => {
+        const libraryVideos = JSON.parse(localStorage.getItem('library_videos') || '[]');
+        
+        if (saved) {
+            const updated = libraryVideos.filter(v => v.id !== videoId);
+            localStorage.setItem('library_videos', JSON.stringify(updated));
+            setSaved(false);
+        } else {
+            libraryVideos.push(video);
+            localStorage.setItem('library_videos', JSON.stringify(libraryVideos));
+            setSaved(true);
+        }
     };
 
     useEffect(() => {
@@ -195,6 +217,11 @@ const Player = () => {
                             <div className="Player-notification flex" onClick={() => setNotify(prev => !prev)}>
                                 {!notify ? <FaRegBell size={25} color="var(--text)" />
                                     : <FaBell size={25} color="var(--text)" />}
+                            </div>
+
+                            <div className="Player-save flex" onClick={handleSaveToLibrary} title={saved ? "Remover da Library" : "Salvar na Library"}>
+                                {saved ? <FaBookmark size={25} color="var(--logo)" />
+                                    : <FaRegBookmark size={25} color="var(--text)" />}
                             </div>
                         </div>
                     </div>

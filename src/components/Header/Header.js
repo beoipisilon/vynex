@@ -22,7 +22,7 @@ const Header = () => {
     const SearchQuery = (e) => {
         e.preventDefault();
         if (SearchRef.current.value !== "") {
-            navigate(`/search=${SearchRef.current.value}`);
+            navigate(`/search/${SearchRef.current.value}`);
             SearchRef.current.value = "";
         }
     }

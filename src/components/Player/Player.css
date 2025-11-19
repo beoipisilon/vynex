@@ -291,6 +291,15 @@
     cursor: pointer;
 }
 
+.Player-save{
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.Player-save:hover{
+    transform: scale(1.1);
+}
+
 .Player-LikeBtns{
     display: flex;
     justify-content: space-around;
