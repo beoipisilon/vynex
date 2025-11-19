@@ -36,20 +36,6 @@ const Search = () => {
         fetchSearchData();
     }, [searchQuery]);
 
-    const lazyFallback = () => {
-        return (
-            <div className='skeleton-main'>
-                <Skeleton className="skeleton-thumb" variant="rectangular" sx={{ bgcolor: 'var(--secondary-alt)' }} />
-                <div className="skeleton-info">
-                    <Skeleton className="skeleton-avatar" variant="circular" width={36} height={36} sx={{ bgcolor: 'var(--secondary-alt)' }} />
-                    <div className="skeleton-text">
-                        <Skeleton variant="text" width="90%" height={20} sx={{ bgcolor: 'var(--secondary-alt)' }} />
-                        <Skeleton variant="text" width="60%" height={20} sx={{ bgcolor: 'var(--secondary-alt)' }} />
-                    </div>
-                </div>
-            </div>
-        )
-    }
 
     return (
         <div className='dashboard-main'>
@@ -57,7 +43,21 @@ const Search = () => {
             <div className="dashboard-container">
                 {!loading ? searchResult.map((item) => {
                     return (
-                        <Suspense fallback={lazyFallback} key={item.id.videoId + Math.random()} >
+                        <Suspense 
+                            fallback={
+                                <div className='skeleton-main'>
+                                    <Skeleton className="skeleton-thumb" variant="rectangular" sx={{ bgcolor: 'var(--secondary-alt)' }} />
+                                    <div className="skeleton-info">
+                                        <Skeleton className="skeleton-avatar" variant="circular" width={36} height={36} sx={{ bgcolor: 'var(--secondary-alt)' }} />
+                                        <div className="skeleton-text">
+                                            <Skeleton variant="text" width="90%" height={20} sx={{ bgcolor: 'var(--secondary-alt)' }} />
+                                            <Skeleton variant="text" width="60%" height={20} sx={{ bgcolor: 'var(--secondary-alt)' }} />
+                                        </div>
+                                    </div>
+                                </div>
+                            } 
+                            key={item.id.videoId + Math.random()} 
+                        >
                             <SearchCard video={item} />
                         </Suspense>
                     )
