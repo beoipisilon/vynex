@@ -82,7 +82,7 @@ const Videocard = ({ video }) => {
 
     return (
         <div className='videocard-main'>
-            <Link to={`/watch=${video.id}`} className='videocard-thumb' state={VideoProp}>
+            <Link to={`/watch/${video.id}`} className='videocard-thumb' state={VideoProp}>
                 <span className="videocard-timestamp">{timestamp}</span>
                 <LazyLoadImage src={url} alt={title} effect="blur" />
                 {/* <img src={url} alt={title} /> */}
