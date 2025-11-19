@@ -5,6 +5,7 @@ import Player from './components/Player/Player';
 import Search from './components/Search/Search';
 import Music from './components/Music/Music';
 import Library from './components/Library/Library';
+import Channel from './components/Channel/Channel';
 import { BrowserRouter as Browser, Routes, Route } from "react-router-dom";
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/music" element={<Music />} />
             <Route path="/library" element={<Library />} />
+            <Route path="/channel/:channelId" element={<Channel />} />
             <Route path="/watch/:videoId" element={<Player />} />
             <Route path="/search/:searchQuery" element={<Search />} />
           </Route>
