@@ -1,10 +1,11 @@
-module.exports = async (req, res) => {
-  // Configurar CORS
+export default async function handler(req, res) {
+  // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
@@ -18,13 +19,12 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Endpoint is required' });
   }
 
-  // Validar endpoints permitidos
   const allowedEndpoints = ['videos', 'search', 'channels', 'playlistItems'];
   if (!allowedEndpoints.includes(endpoint)) {
     return res.status(400).json({ error: 'Invalid endpoint' });
   }
 
-  const apiKey = process.env.REACT_APP_YT_API || process.env.YT_API_KEY;
+  const apiKey = process.env.YT_API_KEY || process.env.REACT_APP_YT_API;
 
   if (!apiKey) {
     return res.status(500).json({ error: 'API key not configured' });
@@ -32,39 +32,29 @@ module.exports = async (req, res) => {
 
   try {
     const url = new URL(`https://www.googleapis.com/youtube/v3/${endpoint}`);
-    
-    // Adicionar API key aos parâmetros
+
     url.searchParams.append('key', apiKey);
-    
-    // Adicionar outros parâmetros da query
-    Object.keys(queryParams).forEach(key => {
-      if (key !== 'endpoint') {
-        url.searchParams.append(key, queryParams[key]);
-      }
+
+    Object.keys(queryParams).forEach(k => {
+      url.searchParams.append(k, queryParams[k]);
     });
 
-    const response = await fetch(url.toString(), {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-    });
+    const ytResponse = await fetch(url.toString());
 
-    if (!response.ok) {
-      const errorData = await response.text();
-      return res.status(response.status).json({ 
+    if (!ytResponse.ok) {
+      const txt = await ytResponse.text();
+      return res.status(ytResponse.status).json({
         error: 'YouTube API error',
-        details: errorData 
+        details: txt,
       });
     }
 
-    const data = await response.json();
-    return res.status(200).json(data);
-  } catch (error) {
-    console.error('Proxy error:', error);
-    return res.status(500).json({ 
+    const json = await ytResponse.json();
+    return res.status(200).json(json);
+  } catch (err) {
+    return res.status(500).json({
       error: 'Internal server error',
-      message: error.message 
+      message: err.message,
     });
   }
 }
