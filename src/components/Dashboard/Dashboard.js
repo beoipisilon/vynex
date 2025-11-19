@@ -15,13 +15,13 @@ const Dashboard = () => {
     const fetchTrendingVideos = async () => {
       const TrendData = await axios.get('/videos', {
         params: {
-          part: 'snippet, contentDetails, statistics, player',
+          part: 'snippet,contentDetails,statistics,player',
           chart: 'mostPopular',
           maxResults: 20,
-          key: process.env.REACT_APP_YT_API,
-          headers: {
-            'Cache-Control': 'max-age=2592000',
-          }
+          key: process.env.REACT_APP_YT_API
+        },
+        headers: {
+          'Cache-Control': 'max-age=2592000'
         }
       });
 

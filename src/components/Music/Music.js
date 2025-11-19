@@ -20,10 +20,10 @@ const Music = () => {
             type: 'video',
             maxResults: 20,
             order: 'viewCount',
-            key: process.env.REACT_APP_YT_API,
-            headers: {
-              'Cache-Control': 'max-age=2592000',
-            }
+            key: process.env.REACT_APP_YT_API
+          },
+          headers: {
+            'Cache-Control': 'max-age=2592000'
           }
         });
 
@@ -32,12 +32,12 @@ const Music = () => {
           
           const VideoDetails = await axios.get('/videos', {
             params: {
-              part: 'snippet, contentDetails, statistics, player',
+              part: 'snippet,contentDetails,statistics,player',
               id: videoIds,
-              key: process.env.REACT_APP_YT_API,
-              headers: {
-                'Cache-Control': 'max-age=2592000',
-              }
+              key: process.env.REACT_APP_YT_API
+            },
+            headers: {
+              'Cache-Control': 'max-age=2592000'
             }
           });
 

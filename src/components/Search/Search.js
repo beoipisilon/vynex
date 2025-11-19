@@ -20,10 +20,10 @@ const Search = () => {
                     part: 'snippet',
                     maxResults: 10,
                     q: searchQuery,
-                    key: process.env.REACT_APP_YT_API,
-                    headers: {
-                        'Cache-Control': 'max-age=2592000',
-                    }
+                    key: process.env.REACT_APP_YT_API
+                },
+                headers: {
+                    'Cache-Control': 'max-age=2592000'
                 }
             });
 
