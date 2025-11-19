@@ -1,13 +1,14 @@
 import "./Player.css";
 import { useState, useEffect, Suspense, lazy, useRef } from 'react'
 import axios from 'axios'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useParams, useNavigate } from 'react-router-dom'
 import ReactPlayer from 'react-player/youtube'
 import { FaBell, FaRegBell, FaThumbsUp, FaThumbsDown, FaRegThumbsUp, FaRegThumbsDown, FaBookmark, FaRegBookmark } from 'react-icons/fa'
 import { AiOutlineUser } from 'react-icons/ai'
 const Videocard = lazy(() => import('../VideoCard/Videocard'));
 
 const Player = () => {
+    const navigate = useNavigate();
     const [like, setLike] = useState(null);
     const [subbed, setSubbed] = useState(false);
     const [notify, setNotify] = useState(false);
@@ -122,13 +123,13 @@ const Player = () => {
                 const channelId = video?.snippet?.channelId;
                 const searchQuery = Title?.split(' ').slice(0, 3).join(' ') || 'music';
                 
-                const RelatedData = await axios.get('/search', {
+                const RelatedData = await axios.get('', {
                     params: {
+                        endpoint: 'search',
                         part: 'snippet',
                         q: searchQuery,
                         type: 'video',
-                        maxResults: 20,
-                        key: process.env.REACT_APP_YT_API
+                        maxResults: 20
                     },
                     headers: {
                         'Cache-Control': 'max-age=2592000'
@@ -143,11 +144,11 @@ const Player = () => {
                         .join(',');
                     
                     if (videoIds) {
-                        const VideoDetails = await axios.get('/videos', {
+                        const VideoDetails = await axios.get('', {
                             params: {
+                                endpoint: 'videos',
                                 part: 'snippet,contentDetails,statistics,player',
-                                id: videoIds,
-                                key: process.env.REACT_APP_YT_API
+                                id: videoIds
                             },
                             headers: {
                                 'Cache-Control': 'max-age=2592000'
@@ -179,7 +180,16 @@ const Player = () => {
                     <h3>{Title}</h3>
                     <div className="Player-info">
                         <div className="Player-MobSection flex gap-1">
-                            <div className="Player-channel">
+                            <div 
+                                className="Player-channel"
+                                onClick={() => {
+                                    const channelId = channelData?.id || video?.snippet?.channelId;
+                                    if (channelId) {
+                                        navigate(`/channel/${channelId}`);
+                                    }
+                                }}
+                                style={{ cursor: 'pointer' }}
+                            >
                                 <div className="Player-ChLogo">
                                     <img
                                         src={channelData.snippet?.thumbnails?.default.url}

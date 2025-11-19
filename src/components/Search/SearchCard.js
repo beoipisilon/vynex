@@ -1,11 +1,12 @@
 import "./SearchCard.css";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { parse } from "tinyduration";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const SearchCard = ({ video }) => {
+    const navigate = useNavigate();
     const [videoData, setVideoData] = useState([]);
     var { title, thumbnails, channelId, channelTitle, publishedAt } = video?.snippet;
 
@@ -14,19 +15,19 @@ const SearchCard = ({ video }) => {
             if (!video?.id?.videoId || !channelId) return;
             
             try {
-                const { data } = await axios.get(`/videos`, {
+                const { data } = await axios.get('', {
                     params: {
+                        endpoint: 'videos',
                         part: 'contentDetails,statistics',
-                        id: video.id.videoId,
-                        key: process.env.REACT_APP_YT_API
+                        id: video.id.videoId
                     }
                 });
 
-                const ChannelData = await axios.get(`/channels`, {
+                const ChannelData = await axios.get('', {
                     params: {
+                        endpoint: 'channels',
                         part: 'snippet,statistics',
-                        id: channelId,
-                        key: process.env.REACT_APP_YT_API
+                        id: channelId
                     }
                 });
 
@@ -107,7 +108,14 @@ const SearchCard = ({ video }) => {
                 <LazyLoadImage src={url} alt={title} effect="blur" />
             </Link>
             <div className="videocard-info">
-                <div className="videocard-avatar">
+                <div 
+                    className="videocard-avatar"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        if (channelId) navigate(`/channel/${channelId}`);
+                    }}
+                    style={{ cursor: 'pointer' }}
+                >
                     <LazyLoadImage
                         src={videoData.channelData?.snippet?.thumbnails?.default?.url}
                         alt={channelTitle}
@@ -118,7 +126,16 @@ const SearchCard = ({ video }) => {
                 <div className="videocard-details flex col">
                     <div className="videocard-title">{Title}</div>
                     <div className="videocard-channel flex col">
-                        <div className="videocard-channelName">{channelTitle}</div>
+                        <div 
+                            className="videocard-channelName" 
+                            onClick={(e) => {
+                                e.preventDefault();
+                                if (channelId) navigate(`/channel/${channelId}`);
+                            }}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            {channelTitle}
+                        </div>
                         <div className="videocard-footer">
                             <div className="videocard-views">{views}</div>
                             <div className="videocard-uploaded">{uploadDate}</div>

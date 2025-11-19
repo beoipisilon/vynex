@@ -1,11 +1,12 @@
 import "./Videocard.css";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { parse } from "tinyduration";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const Videocard = ({ video }) => {
+    const navigate = useNavigate();
     var { title, thumbnails, channelId, channelTitle, publishedAt } = video.snippet;
     var { duration } = video.contentDetails;
     var { viewCount } = video.statistics;
@@ -58,17 +59,27 @@ const Videocard = ({ video }) => {
 
     useEffect(() => {
         const GetChannelData = async () => {
-            const ChannelData = await axios.get(`/channels`, {
-                params: {
-                    part: 'snippet,statistics',
-                    id: channelId,
-                    key: process.env.REACT_APP_YT_API
+            try {
+                const ChannelData = await axios.get('', {
+                    params: {
+                        endpoint: 'channels',
+                        part: 'snippet,statistics',
+                        id: channelId
+                    },
+                    headers: {
+                        'Cache-Control': 'max-age=2592000'
+                    }
+                });
+                if (ChannelData && ChannelData.data && ChannelData.data.items && ChannelData.data.items[0]) {
+                    setChannelData(ChannelData.data.items[0]);
                 }
-            });
-            setChannelData(ChannelData.data.items[0]);
-            // console.log(ChannelData);
+            } catch (error) {
+                console.error('Erro ao buscar dados do canal:', error);
+            }
         }
-        GetChannelData();
+        if (channelId) {
+            GetChannelData();
+        }
     }, [channelId, video.id]);
 
     var VideoProp = {
@@ -88,7 +99,14 @@ const Videocard = ({ video }) => {
                 {/* <img src={url} alt={title} /> */}
             </Link>
             <div className="videocard-info">
-                <div className="videocard-avatar">
+                <div 
+                    className="videocard-avatar"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        if (channelId) navigate(`/channel/${channelId}`);
+                    }}
+                    style={{ cursor: 'pointer' }}
+                >
                     <LazyLoadImage
                         src={channelData.snippet?.thumbnails?.default?.url}
                         alt={channelTitle}
@@ -105,7 +123,16 @@ const Videocard = ({ video }) => {
                 <div className="videocard-details flex col">
                     <div className="videocard-title">{Title}</div>
                     <div className="videocard-channel flex col">
-                        <div className="videocard-channelName">{channelTitle}</div>
+                        <div 
+                            className="videocard-channelName" 
+                            onClick={(e) => {
+                                e.preventDefault();
+                                if (channelId) navigate(`/channel/${channelId}`);
+                            }}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            {channelTitle}
+                        </div>
                         <div className="videocard-footer">
                             <div className="videocard-views">{views}</div>
                             <div className="videocard-uploaded">{uploadDate}</div>

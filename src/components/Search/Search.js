@@ -15,12 +15,12 @@ const Search = () => {
 
     useEffect(() => {
         const fetchSearchData = async () => {
-            const SearchData = await axios.get('/search', {
+            const SearchData = await axios.get('', {
                 params: {
+                    endpoint: 'search',
                     part: 'snippet',
                     maxResults: 10,
-                    q: searchQuery,
-                    key: process.env.REACT_APP_YT_API
+                    q: searchQuery
                 },
                 headers: {
                     'Cache-Control': 'max-age=2592000'

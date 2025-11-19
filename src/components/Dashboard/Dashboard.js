@@ -14,12 +14,12 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchTrendingVideos = async () => {
       try {
-        const TrendData = await axios.get('/videos', {
+        const TrendData = await axios.get('', {
           params: {
+            endpoint: 'videos',
             part: 'snippet,contentDetails,statistics,player',
             chart: 'mostPopular',
-            maxResults: 20,
-            key: process.env.REACT_APP_YT_API
+            maxResults: 20
           },
           headers: {
             'Cache-Control': 'max-age=2592000'

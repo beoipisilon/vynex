@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/youtube",
+      "destination": "/api/youtube.js"
+    }
+  ]
+}
+

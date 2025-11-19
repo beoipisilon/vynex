@@ -13,14 +13,14 @@ const Music = () => {
   useEffect(() => {
     const fetchMusicVideos = async () => {
       try {
-        const MusicData = await axios.get('/search', {
+        const MusicData = await axios.get('', {
           params: {
+            endpoint: 'search',
             part: 'snippet',
             q: 'music',
             type: 'video',
             maxResults: 20,
-            order: 'viewCount',
-            key: process.env.REACT_APP_YT_API
+            order: 'viewCount'
           },
           headers: {
             'Cache-Control': 'max-age=2592000'
@@ -30,11 +30,11 @@ const Music = () => {
         if (MusicData && MusicData.data.items) {
           const videoIds = MusicData.data.items.map(item => item.id.videoId).join(',');
           
-          const VideoDetails = await axios.get('/videos', {
+          const VideoDetails = await axios.get('', {
             params: {
+              endpoint: 'videos',
               part: 'snippet,contentDetails,statistics,player',
-              id: videoIds,
-              key: process.env.REACT_APP_YT_API
+              id: videoIds
             },
             headers: {
               'Cache-Control': 'max-age=2592000'

@@ -1,11 +1,11 @@
 import axios from "axios";
 
 export default async function FetchContent(videoId) {
-    const { data } = await axios.get(`/videos`, {
+    const { data } = await axios.get('', {
         params: {
+            endpoint: "videos",
             part: "contentDetails,statistics",
-            id: videoId,
-            key: process.env.REACT_APP_YT_API
+            id: videoId
         }
     });
     return data;
