@@ -3,40 +3,55 @@ import "./DashboardM.css";
 import { useState, useEffect, Suspense, lazy } from 'react';
 import axios from 'axios';
 import Skeleton from '@mui/material/Skeleton';
-// import Videocard from "../VideoCard/Videocard";
+import { useApiRequest } from '../../hooks/useApiRequest';
 const Videocard = lazy(() => import('../VideoCard/Videocard'));
 
 const Dashboard = () => {
   const [trendingVideos, setTrendingVideos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { makeRequest, cancelRequest } = useApiRequest();
   var maxResult = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchTrendingVideos = async () => {
       try {
-        const TrendData = await axios.get('/api/youtube', {
-          params: {
-            endpoint: 'videos',
-            part: 'snippet,contentDetails,statistics,player',
-            chart: 'mostPopular',
-            maxResults: 20
+        const TrendData = await makeRequest(
+          '/api/youtube',
+          {
+            params: {
+              endpoint: 'videos',
+              part: 'snippet,contentDetails,statistics',
+              chart: 'mostPopular',
+              regionCode: 'US',
+              maxResults: 20
+            }
           },
-          headers: {
-            'Cache-Control': 'max-age=2592000'
-          }
-        });
+          'dashboard-trending'
+        );
 
-        if (TrendData && TrendData.data && TrendData.data.items) {
+        if (isMounted && TrendData && TrendData.data && TrendData.data.items) {
           setTrendingVideos(TrendData.data.items);
         }
       } catch (error) {
-        console.error('Erro ao buscar vídeos trending:', error);
+        if (isMounted && error.message !== 'Request cancelled') {
+          console.error('Erro ao buscar vídeos trending:', error);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     }
+    
     fetchTrendingVideos();
-  }, []);
+
+    return () => {
+      isMounted = false;
+      cancelRequest();
+    };
+  }, [makeRequest, cancelRequest]);
 
   return (
     <div className='dashboard-main'>
