@@ -1,4 +1,4 @@
-[![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=vynex)](https://vynex.vercel.app)
+[![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=vynex-phi)](https://vynex-phi.vercel.app)
 
 # Vynex | The Modern Video & Streaming Platform
 ##### Created : 17/11/2025
