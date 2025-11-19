@@ -3,6 +3,7 @@
     gap: 1.5em;
     width: 100%;
     max-width: 100%;
+    align-items: flex-start;
 }
 
 .Player-main {
@@ -320,8 +321,6 @@
     max-width: 400px;
     background-color: var(--primary);
     padding: 0.5em;
-    overflow-y: auto;
-    max-height: calc(100vh - 100px);
 }
 
 .Player-related h4 {
