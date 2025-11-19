@@ -14,7 +14,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchTrendingVideos = async () => {
       try {
-        const TrendData = await axios.get('/', {
+        const TrendData = await axios.get('/api/youtube', {
           params: {
             endpoint: 'videos',
             part: 'snippet,contentDetails,statistics,player',

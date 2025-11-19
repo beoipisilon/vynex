@@ -15,7 +15,7 @@ const Search = () => {
 
     useEffect(() => {
         const fetchSearchData = async () => {
-            const SearchData = await axios.get('/', {
+            const SearchData = await axios.get('/api/youtube', {
                 params: {
                     endpoint: 'search',
                     part: 'snippet',

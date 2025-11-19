@@ -13,7 +13,7 @@ const Music = () => {
   useEffect(() => {
     const fetchMusicVideos = async () => {
       try {
-        const MusicData = await axios.get('/', {
+        const MusicData = await axios.get('/api/youtube', {
           params: {
             endpoint: 'search',
             part: 'snippet',
@@ -30,7 +30,7 @@ const Music = () => {
         if (MusicData && MusicData.data.items) {
           const videoIds = MusicData.data.items.map(item => item.id.videoId).join(',');
           
-          const VideoDetails = await axios.get('/', {
+          const VideoDetails = await axios.get('/api/youtube', {
             params: {
               endpoint: 'videos',
               part: 'snippet,contentDetails,statistics,player',
