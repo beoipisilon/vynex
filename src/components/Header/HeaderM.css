@@ -2,10 +2,35 @@
     .header-main{
         width: 100%;
         padding: 0.5em 1em;
-        z-index: 1;
+        z-index: 100;
         gap: 1em;
         background-color: var(--primary);
         justify-content: space-between;
+        position: sticky;
+        top: 0;
+        left: 0;
+    }
+    
+    .header-menu-btn {
+        background: none;
+        border: none;
+        outline: none;
+        padding: 0.5em;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease;
+        flex-shrink: 0;
+    }
+
+    .header-menu-btn:hover {
+        background-color: var(--secondary-alt);
+    }
+
+    .header-menu-btn svg {
+        display: block;
     }
     
     .header-nav .header-ham,

@@ -6,13 +6,16 @@ import { HiSearch } from "react-icons/hi"
 import { BsYoutube } from "react-icons/bs"
 import { AiOutlineUser } from "react-icons/ai"
 import { FaGithub } from "react-icons/fa"
+import { HiMenu } from "react-icons/hi"
 import { Devbase } from "../../assets";
+import { useSidebar } from "../../contexts/SidebarContext";
 
 const Header = () => {
     const [showProfile, setShowProfile] = useState(false);
     const SearchRef = useRef(null);
     const profileRef = useRef(null);
     const navigate = useNavigate();
+    const { toggleSidebar } = useSidebar();
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -41,6 +44,9 @@ const Header = () => {
     return (
         <div className="header-main flex">
             <div className="header-nav flex gap-2">
+                <button className="header-menu-btn" onClick={toggleSidebar} title="Menu">
+                    <HiMenu color="var(--text)" size={28} />
+                </button>
                 <div className="header-logo flex gap-05">
                     <BsYoutube color="var(--logo)" size={40} />
                     <h1>Vy<span style={{ color: "var(--logo)" }}>nex</span></h1>

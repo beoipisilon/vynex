@@ -29,6 +29,10 @@
         font-size: 1.6em;
     }
     
+    .header-menu-btn {
+        display: none;
+    }
+    
     .header-ham, .header-logo{
         cursor: default;
     }

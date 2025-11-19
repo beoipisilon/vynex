@@ -1,27 +1,71 @@
 @media (max-width: 600px){
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
     .sidebar-main{
         position: fixed;
-        bottom: 0;
-        width: 100%;
-        padding: 0.8em 1em;
-        justify-content: space-evenly;
-        flex-direction: row;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: 240px;
+        max-width: 80%;
+        padding: 4.5em 0 0 0;
         background-color: var(--primary);
-        transition: 0.3s ease-in-out;
-        z-index: 2;
+        transition: transform 0.3s ease-in-out;
+        z-index: 1000;
+        transform: translateX(-100%);
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+    }
+
+    .sidebar-main.sidebar-open {
+        transform: translateX(0);
     }
     
     .sidebar-nav span{
-        display: none;
+        display: block;
     }
     
     .sidebar-nav{
-        gap: 0 !important;
-        padding: 0.5em;
-        border-radius: 0.5em;
+        gap: 1.25em !important;
+        padding: 0.75em 1.5em;
+        border-radius: 0;
         text-decoration: none;
         color: var(--text);
-        transition: 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        width: 100%;
+        margin: 0;
+        box-sizing: border-box;
+        position: relative;
+        font-size: 0.95em;
+        font-weight: 500;
+    }
+
+    .sidebar-nav:hover {
+        background-color: var(--secondary-alt);
     }
     
     .sidebar-nav .nav-icon svg{
@@ -30,5 +74,23 @@
     
     .sidebar-nav.active{
         background-color: var(--secondary-alt);
-    }   
+        color: var(--logo);
+        font-weight: 600;
+    }
+
+    .sidebar-nav.active .nav-icon svg {
+        color: var(--logo);
+    }
+
+    .sidebar-nav.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 60%;
+        background-color: var(--logo);
+        border-radius: 0 3px 3px 0;
+    }
 }

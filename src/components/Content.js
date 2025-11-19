@@ -1,17 +1,19 @@
 import { Outlet } from "react-router-dom";
-// import Dashboard from './Dashboard/Dashboard'
 import Header from './Header/Header'
 import Sidebar from './Sidebar/Sidebar'
+import { SidebarProvider } from '../contexts/SidebarContext'
 
 const Content = () => {
     return (
-        <div className="Content-main">
-            <Header />
-            <Sidebar />
-            <div className="Outlet">
-                <Outlet />
+        <SidebarProvider>
+            <div className="Content-main">
+                <Header />
+                <Sidebar />
+                <div className="Outlet">
+                    <Outlet />
+                </div>
             </div>
-        </div>
+        </SidebarProvider>
     )
 }
 
