@@ -26,6 +26,199 @@
     letter-spacing: 1px;
 }
 
+.Player-comments {
+    background-color: var(--primary);
+    padding: 1.5em 0;
+    margin-top: 1em;
+    width: 100%;
+}
+
+.Player-comments h4 {
+    color: var(--text);
+    margin-bottom: 1.5em;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.Player-comment-form {
+    margin-bottom: 2em;
+    width: 100%;
+}
+
+.Player-comment-input-wrapper {
+    display: flex;
+    gap: 1em;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.Player-comment-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    background-color: var(--secondary-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.Player-comment-input-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    width: 100%;
+    min-width: 0;
+}
+
+.Player-comment-input {
+    width: 100%;
+    padding: 0.5em 0;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid var(--secondary-alt);
+    color: var(--text);
+    font-size: 0.95em;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.Player-comment-input:focus {
+    border-bottom-color: var(--logo);
+}
+
+.Player-comment-input::placeholder {
+    color: var(--text-light);
+}
+
+.Player-comment-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1em;
+    margin-top: 0.5em;
+    width: 100%;
+}
+
+.Player-comment-cancel,
+.Player-comment-submit {
+    padding: 0.6em 1.2em;
+    border: none;
+    border-radius: 0.3em;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.Player-comment-cancel {
+    background-color: transparent;
+    color: var(--text-light);
+}
+
+.Player-comment-cancel:hover {
+    color: var(--text);
+    background-color: var(--secondary-alt);
+}
+
+.Player-comment-submit {
+    background-color: var(--logo);
+    color: white;
+}
+
+.Player-comment-submit:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.Player-comment-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.Player-comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    width: 100%;
+}
+
+.Player-no-comments {
+    color: var(--text-light);
+    text-align: center;
+    padding: 3em 0;
+    font-style: italic;
+    width: 100%;
+}
+
+.Player-comment-item {
+    display: flex;
+    gap: 1em;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.Player-comment-content {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+}
+
+.Player-comment-header {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+    margin-bottom: 0.5em;
+    flex-wrap: wrap;
+}
+
+.Player-comment-author {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 0.9em;
+}
+
+.Player-comment-date {
+    color: var(--text-light);
+    font-size: 0.85em;
+}
+
+.Player-comment-text {
+    color: var(--text);
+    margin-bottom: 0.5em;
+    line-height: 1.6;
+    font-size: 0.95em;
+    word-wrap: break-word;
+    width: 100%;
+}
+
+.Player-comment-footer {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    margin-top: 0.5em;
+}
+
+.Player-comment-like {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 0.4em 0.8em;
+    border-radius: 1.5em;
+    transition: background-color 0.2s;
+    font-size: 0.85em;
+}
+
+.Player-comment-like:hover {
+    background-color: var(--secondary-alt);
+    color: var(--text);
+}
+
 .Player-info{
     display: flex;
     justify-content: space-between;
