@@ -1,8 +1,11 @@
 const cache = new Map();
 const pendingRequests = new Map();
+const rateLimiter = new Map();
 
 const CACHE_TTL_LISTINGS = 10 * 60 * 1000;
 const CACHE_TTL_VIDEO_DETAILS = 60 * 60 * 1000;
+const RATE_LIMIT_WINDOW = 1000;
+const MAX_REQUESTS_PER_WINDOW = 200;
 
 function getCacheKey(endpoint, params) {
   const sortedParams = Object.keys(params)
@@ -33,6 +36,9 @@ function setCachedData(cacheKey, data, ttl) {
 
 function getTTL(endpoint, params) {
   if (endpoint === 'videos' && params.id && !params.chart) {
+    return CACHE_TTL_VIDEO_DETAILS;
+  }
+  if (endpoint === 'channels') {
     return CACHE_TTL_VIDEO_DETAILS;
   }
   return CACHE_TTL_LISTINGS;
@@ -126,6 +132,30 @@ module.exports = async (req, res) => {
     console.log(`[CACHE HIT] ${cacheKey}`);
     return res.status(200).json(cachedData);
   }
+
+  const now = Date.now();
+  const windowStart = Math.floor(now / RATE_LIMIT_WINDOW) * RATE_LIMIT_WINDOW;
+  const rateLimitKey = `${endpoint}-${windowStart}`;
+  
+  if (!rateLimiter.has(rateLimitKey)) {
+    rateLimiter.set(rateLimitKey, { count: 0, window: windowStart });
+  }
+  
+  const rateLimit = rateLimiter.get(rateLimitKey);
+  rateLimit.count++;
+  
+  if (rateLimit.count > MAX_REQUESTS_PER_WINDOW) {
+    console.log(`[RATE LIMIT] Too many requests for ${endpoint} in window ${windowStart}`);
+    return res.status(429).json({
+      error: 'Too many requests',
+      message: 'Rate limit exceeded. Please try again later.',
+      retryAfter: RATE_LIMIT_WINDOW / 1000
+    });
+  }
+  
+  setTimeout(() => {
+    rateLimiter.delete(rateLimitKey);
+  }, RATE_LIMIT_WINDOW * 2);
 
   if (pendingRequests.has(cacheKey)) {
     console.log(`[PENDING REQUEST] Waiting for existing request: ${cacheKey}`);

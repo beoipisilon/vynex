@@ -1,12 +1,14 @@
 import "./Videocard.css";
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { parse } from "tinyduration";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { useApiRequest } from '../../hooks/useApiRequest';
 
 const Videocard = ({ video }) => {
     const navigate = useNavigate();
+    const { makeRequest } = useApiRequest();
+    const cardRef = useRef(null);
     var { title, thumbnails, channelId, channelTitle, publishedAt } = video.snippet;
     var { duration } = video.contentDetails;
     var { viewCount } = video.statistics;
@@ -22,8 +24,8 @@ const Videocard = ({ video }) => {
     var url = thumbnails.maxres?.url || thumbnails.high?.url || thumbnails.medium?.url || thumbnails.standard?.url || thumbnails.default?.url;
     // var url = thumbnails.standard?.url || thumbnails.medium?.url || thumbnails.high?.url || thumbnails.default?.url || thumbnails.maxres?.url;
 
-    //Timestamp formatting
-    const [channelData, setChannelData] = useState([]);
+    const [channelData, setChannelData] = useState(null);
+    const [shouldLoadChannel, setShouldLoadChannel] = useState(false);
     let { hours, minutes, seconds } = parse(duration);
     seconds = seconds < 10 ? `0${seconds}` : seconds;
     minutes = hours > 0 ? minutes < 10 ? `0${minutes}` : minutes : minutes;
@@ -58,29 +60,63 @@ const Videocard = ({ video }) => {
     }
 
     useEffect(() => {
-        const GetChannelData = async () => {
-            try {
-                const ChannelData = await axios.get('/api/youtube', {
-                    params: {
-                        endpoint: 'channels',
-                        part: 'snippet,statistics',
-                        id: channelId
-                    },
-                    headers: {
-                        'Cache-Control': 'max-age=2592000'
+        if (!cardRef.current || shouldLoadChannel) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && !shouldLoadChannel) {
+                        setShouldLoadChannel(true);
                     }
                 });
-                if (ChannelData && ChannelData.data && ChannelData.data.items && ChannelData.data.items[0]) {
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(cardRef.current);
+
+        return () => {
+            if (cardRef.current) {
+                observer.unobserve(cardRef.current);
+            }
+        };
+    }, [shouldLoadChannel]);
+
+    useEffect(() => {
+        if (!shouldLoadChannel || !channelId) return;
+
+        let isMounted = true;
+
+        const GetChannelData = async () => {
+            try {
+                const ChannelData = await makeRequest(
+                    '/api/youtube',
+                    {
+                        params: {
+                            endpoint: 'channels',
+                            part: 'snippet,statistics',
+                            id: channelId
+                        }
+                    },
+                    `channel-${channelId}`
+                );
+                
+                if (isMounted && ChannelData && ChannelData.data && ChannelData.data.items && ChannelData.data.items[0]) {
                     setChannelData(ChannelData.data.items[0]);
                 }
             } catch (error) {
-                console.error('Erro ao buscar dados do canal:', error);
+                if (isMounted && error.message !== 'Request cancelled') {
+                    console.error('Erro ao buscar dados do canal:', error);
+                }
             }
         }
-        if (channelId) {
-            GetChannelData();
-        }
-    }, [channelId, video.id]);
+        
+        GetChannelData();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [shouldLoadChannel, channelId, video.id, makeRequest]);
 
     var VideoProp = {
         video,
@@ -92,7 +128,7 @@ const Videocard = ({ video }) => {
 
 
     return (
-        <div className='videocard-main'>
+        <div className='videocard-main' ref={cardRef}>
             <Link to={`/watch/${video.id}`} className='videocard-thumb' state={VideoProp}>
                 <span className="videocard-timestamp">{timestamp}</span>
                 <LazyLoadImage src={url} alt={title} effect="blur" />
@@ -107,12 +143,18 @@ const Videocard = ({ video }) => {
                     }}
                     style={{ cursor: 'pointer' }}
                 >
-                    <LazyLoadImage
-                        src={channelData.snippet?.thumbnails?.default?.url}
-                        alt={channelTitle}
-                        width={36}
-                        height={36}
-                        effect="blur" />
+                    {channelData?.snippet?.thumbnails?.default?.url ? (
+                        <LazyLoadImage
+                            src={channelData.snippet.thumbnails.default.url}
+                            alt={channelTitle}
+                            width={36}
+                            height={36}
+                            effect="blur" />
+                    ) : (
+                        <div style={{ width: 36, height: 36, borderRadius: '50%', backgroundColor: 'var(--secondary-alt)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text)', fontSize: '0.8em' }}>
+                            {channelTitle?.charAt(0)?.toUpperCase() || '?'}
+                        </div>
+                    )}
                     {/* <img
                         src={channelData.snippet?.thumbnails?.default.url}
                         alt={channelData.snippet?.title}
