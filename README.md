@@ -3,7 +3,7 @@
 # Vynex | The Modern Video & Streaming Platform
 ##### Created : 17/11/2025
 
-A YouTube-style app built with React. Search, browse trending and music videos, save stuff to your library, and watch with related recommendations — all powered by the YouTube API.
+A YouTube-style app built with React. Search, browse trending and music videos, save stuff to your library, and watch with related recommendations all powered by the YouTube API.
 
 ### Preview
 
