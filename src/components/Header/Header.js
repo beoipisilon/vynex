@@ -80,7 +80,7 @@ const Header = () => {
                         <div className="profile-divider"></div>
 
                         <div className="profile-menu">
-                            <a href="https://vynex-phi.vercel.app" className="profile-menu-item" target="_blank" rel="noopener noreferrer">
+                            <a href="https://vynex-self.vercel.app" className="profile-menu-item" target="_blank" rel="noopener noreferrer">
                                 <Devbase fill="var(--text)" size={20} />
                                 <span>Vercel</span>
                             </a>
