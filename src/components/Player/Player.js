@@ -120,7 +120,6 @@ const Player = () => {
     useEffect(() => {
         const fetchRelatedVideos = async () => {
             try {
-                const channelId = video?.snippet?.channelId;
                 const searchQuery = Title?.split(' ').slice(0, 3).join(' ') || 'music';
                 
                 const RelatedData = await axios.get('/api/youtube', {

@@ -2,7 +2,7 @@ import "./Sidebar.css"
 import "./SidebarM.css"
 import { HiHome } from "react-icons/hi"
 import { SiYoutubemusic } from "react-icons/si"
-import { Subscription, Library } from "../../assets/index"
+import { Library } from "../../assets/index"
 import { Link, useLocation } from "react-router-dom"
 import { useSidebar } from "../../contexts/SidebarContext"
 

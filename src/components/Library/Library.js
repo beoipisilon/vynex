@@ -26,12 +26,6 @@ const Library = () => {
     loadSavedVideos();
   }, []);
 
-  const handleRemoveVideo = (videoId) => {
-    const updated = savedVideos.filter(video => video.id !== videoId);
-    setSavedVideos(updated);
-    localStorage.setItem('library_videos', JSON.stringify(updated));
-  };
-
   return (
     <div className='dashboard-main'>
       <h1>Library</h1>

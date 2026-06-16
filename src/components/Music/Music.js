@@ -1,7 +1,6 @@
 import "../Dashboard/Dashboard.css";
 import "../Dashboard/DashboardM.css";
 import { useState, useEffect, Suspense, lazy } from 'react';
-import axios from 'axios';
 import Skeleton from '@mui/material/Skeleton';
 import { useApiRequest } from '../../hooks/useApiRequest';
 const Videocard = lazy(() => import('../VideoCard/Videocard'));

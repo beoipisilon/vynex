@@ -60,7 +60,8 @@ const Videocard = ({ video }) => {
     }
 
     useEffect(() => {
-        if (!cardRef.current || shouldLoadChannel) return;
+        const currentCard = cardRef.current;
+        if (!currentCard || shouldLoadChannel) return;
 
         const observer = new IntersectionObserver(
             (entries) => {
@@ -73,12 +74,10 @@ const Videocard = ({ video }) => {
             { threshold: 0.1 }
         );
 
-        observer.observe(cardRef.current);
+        observer.observe(currentCard);
 
         return () => {
-            if (cardRef.current) {
-                observer.unobserve(cardRef.current);
-            }
+            observer.unobserve(currentCard);
         };
     }, [shouldLoadChannel]);
 
